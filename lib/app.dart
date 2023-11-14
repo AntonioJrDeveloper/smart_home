@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:smart_home/design/app_routes.dart';
+import 'package:smart_home/design/designs.dart';
 import 'package:smart_home/pages/pages.dart';
 
 class SmartHome extends StatelessWidget {

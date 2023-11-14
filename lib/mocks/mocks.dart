@@ -1,0 +1,3 @@
+class Mocks {
+  Mocks._();
+}
