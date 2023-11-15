@@ -10,15 +10,11 @@ class LogInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Column(
-        children: <Widget>[
-          TitleGroup(),
-          LogInGroup(),
-          MaxGap(40),
-          AccountGroup()
-        ],
+        body: SingleChildScrollView(
+      child: Column(
+        children: <Widget>[TitleGroup(), LogInGroup(), AccountGroup()],
       ),
-    );
+    ));
   }
 }
 
@@ -29,23 +25,30 @@ class AccountGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        TextButton(
-            onPressed: () => print('Forgot Password'),
-            child: Text(
-              SmartHomeCopys.forgotPwd,
-              style: SmartHomeThemes.defaultTheme.textTheme.bodySmall!.copyWith(
-                  color: SmartHomeColors.brandSecondaryColor, fontSize: 24),
-            )),
-        TextButton(
-            onPressed: () => print('Create Account'),
-            child: Text(
-              SmartHomeCopys.createAccount,
-              style: SmartHomeThemes.defaultTheme.textTheme.bodySmall!.copyWith(
-                  color: SmartHomeColors.brandPrimaryColor, fontSize: 24),
-            ))
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, bottom: 20),
+      child: Column(
+        children: <Widget>[
+          TextButton(
+              onPressed: () => print('Forgot Password'),
+              child: Text(
+                SmartHomeCopys.forgotPwd,
+                style: SmartHomeThemes.defaultTheme.textTheme.bodySmall!
+                    .copyWith(
+                        color: SmartHomeColors.brandSecondaryColor,
+                        fontSize: 24),
+              )),
+          const Gap(10),
+          TextButton(
+              onPressed: () => print('Create Account'),
+              child: Text(
+                SmartHomeCopys.createAccount,
+                style: SmartHomeThemes.defaultTheme.textTheme.bodySmall!
+                    .copyWith(
+                        color: SmartHomeColors.brandPrimaryColor, fontSize: 24),
+              )),
+        ],
+      ),
     );
   }
 }
@@ -57,21 +60,50 @@ class LogInGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      transform: Matrix4.translationValues(0, -25, 0),
-      margin: const EdgeInsets.only(left: 25, right: 25),
-      height: 300,
-      decoration: const BoxDecoration(
-          color: SmartHomeColors.brandLightColor,
-          borderRadius: BorderRadius.all(SmartHomeRadius.small),
-          boxShadow: [
-            BoxShadow(
-                color: SmartHomeColors.brandLightDividerColor,
-                offset: Offset(0, 10),
-                spreadRadius: 2.5,
-                blurRadius: 7.5)
-          ]),
-    );
+    return Stack(children: <Widget>[
+      Container(
+        transform: Matrix4.translationValues(0, -25, 0),
+        margin: const EdgeInsets.only(left: 25, right: 25),
+        height: 300,
+        decoration: const BoxDecoration(
+            color: SmartHomeColors.brandLightColor,
+            borderRadius: BorderRadius.all(SmartHomeRadius.small),
+            boxShadow: [
+              BoxShadow(
+                  color: SmartHomeColors.brandLightDividerColor,
+                  offset: Offset(0, 10),
+                  blurRadius: 7.5)
+            ]),
+      ),
+      Center(
+        child: Column(children: <Widget>[
+          Text(
+            SmartHomeCopys.welcome,
+            style: SmartHomeThemes.defaultTheme.textTheme.displaySmall!
+                .copyWith(
+                    color: SmartHomeColors.brandPrimaryColor, fontSize: 32),
+          ),
+          Form(
+              child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 45),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: SmartHomeColors.brandLightColor,
+                    border: Border.all(
+                        color: SmartHomeColors.brandLightDividerColor,
+                        width: 2),
+                    borderRadius: const BorderRadius.all(SmartHomeRadius.xs),
+                  ),
+                )
+              ],
+            ),
+          ))
+        ]),
+      ),
+    ]);
   }
 }
 
@@ -87,7 +119,7 @@ class TitleGroup extends StatelessWidget {
       height: 350,
       decoration: BoxDecoration(gradient: SmartHomeColors.brandLinearGradient),
       child: Column(children: <Widget>[
-        const MaxGap(100),
+        const Gap(100),
         Text(
           SmartHomeCopys.home,
           style: SmartHomeThemes.defaultTheme.textTheme.titleSmall!
@@ -98,7 +130,7 @@ class TitleGroup extends StatelessWidget {
           style: SmartHomeThemes.defaultTheme.textTheme.titleMedium!
               .copyWith(color: SmartHomeColors.brandLightColor),
         ),
-        const MaxGap(40),
+        const Gap(40),
         Text(
           SmartHomeCopys.controlSpace,
           style: SmartHomeThemes.defaultTheme.textTheme.bodyLarge!
