@@ -11,6 +11,7 @@ class SmartHomeColors {
   static const Color brandTertiaryColor = Color.fromRGBO(47, 29, 115, 1);
   static const Color cardsColor = Color.fromRGBO(102, 109, 242, 1);
   static const Color brandLightDividerColor = Color.fromRGBO(242, 242, 242, 1);
+  static const Color brandLightInputColor = Color.fromRGBO(227, 226, 226, 1);
   static const Color brandLightColor = Colors.white;
   static const Color brandLightControlColor = Color.fromRGBO(125, 215, 255, 1);
 }
