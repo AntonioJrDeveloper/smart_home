@@ -9,6 +9,7 @@ class SmartHomeCopys {
   static const String createAccount = 'Create An Account';
   static const String youGoing = 'What are you going to do ?';
   static const String temperature = 'Temperature';
+  static const String outSide = 'Out side Temp';
   static const String roomsHouse = 'Rooms of the house';
   static const String userEmailInputLabel = 'Email';
   static const String userPswInputLabel = 'Password';

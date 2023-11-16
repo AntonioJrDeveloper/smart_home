@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 
 import 'package:smart_home/design/designs.dart';
 import 'package:smart_home/pages/helpers/validate_email.dart';
+import 'package:smart_home/widgets/widgets.dart';
 
 class LogInPage extends StatelessWidget {
   const LogInPage({Key? key}) : super(key: key);
@@ -120,6 +121,8 @@ class _FromGroupState extends State<FromGroup> {
   final defaultInputLabelTheme = SmartHomeThemes
       .defaultTheme.textTheme.bodySmall!
       .copyWith(color: SmartHomeColors.brandLightInputColor, fontSize: 24);
+  late bool onTapControllerEmail = true;
+  late bool onTapControllerPsw = true;
 
   @override
   void initState() {
@@ -138,20 +141,25 @@ class _FromGroupState extends State<FromGroup> {
           child: Column(
             children: <Widget>[
               Container(
+                padding: const EdgeInsets.only(left: 12, top: 10, bottom: 10),
                 key: const Key('container-email'),
-                height: 40,
+                height: 50,
                 decoration: userEmailContainerDecoration,
                 child: TextFormField(
                   key: const Key('input-email'),
                   style: SmartHomeThemes.defaultTheme.textTheme.bodySmall,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.emailAddress,
+                  controller: userEmailInputController,
                   validator: (value) => validateEmail(value!)
-                      ? value
+                      ? null
                       : SmartHomeErrors.userEmailError,
                   onTap: () {
                     setState(() {
                       userEmailContainerDecoration =
                           activeContainerInputDecoration;
                       pswContainerDecoration = defaultCotainerInputDecoration;
+                      onTapControllerEmail = false;
                     });
                   },
                   onTapOutside: (event) {
@@ -165,25 +173,29 @@ class _FromGroupState extends State<FromGroup> {
                   },
                   decoration: InputDecoration(
                       border: defaultInputBorder,
-                      label: Center(
-                        child: Text(
-                          SmartHomeCopys.userEmailInputLabel,
-                          style: defaultInputLabelTheme,
-                        ),
-                      )),
+                      label: onTapControllerEmail
+                          ? Center(
+                              child: Text(
+                                SmartHomeCopys.userEmailInputLabel,
+                                style: defaultInputLabelTheme,
+                              ),
+                            )
+                          : null),
                 ),
               ),
               const Gap(20),
               Container(
+                padding: const EdgeInsets.only(left: 12, top: 10, bottom: 10),
                 key: const Key('container-psw'),
-                height: 40,
+                height: 50,
                 decoration: pswContainerDecoration,
                 child: TextFormField(
                   key: const Key('input-psw'),
                   style: SmartHomeThemes.defaultTheme.textTheme.bodySmall,
+                  textAlign: TextAlign.center,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return SmartHomeCopys.userPswInputLabel;
+                      return SmartHomeErrors.userPswError;
                     }
                     return null;
                   },
@@ -192,6 +204,7 @@ class _FromGroupState extends State<FromGroup> {
                       pswContainerDecoration = activeContainerInputDecoration;
                       userEmailContainerDecoration =
                           defaultCotainerInputDecoration;
+                      onTapControllerPsw = false;
                     });
                   },
                   onTapOutside: (event) {
@@ -203,33 +216,50 @@ class _FromGroupState extends State<FromGroup> {
                   obscuringCharacter: '*',
                   decoration: InputDecoration(
                       border: defaultInputBorder,
-                      label: Center(
-                          child: Text(
-                        SmartHomeCopys.userPswInputLabel,
-                        style: defaultInputLabelTheme,
-                      ))),
+                      label: onTapControllerPsw
+                          ? Center(
+                              child: Text(
+                              SmartHomeCopys.userPswInputLabel,
+                              style: defaultInputLabelTheme,
+                            ))
+                          : null),
                 ),
               ),
               const Gap(30),
-              MaterialButton(
-                onPressed: () => print('LogIn'),
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                      borderRadius:
-                          const BorderRadius.all(SmartHomeRadius.small),
-                      gradient: SmartHomeColors.brandLinearGradient),
-                  child: Center(
-                    child: Text(
-                      SmartHomeCopys.logIn,
-                      style: SmartHomeThemes.defaultTheme.textTheme.bodySmall!
-                          .copyWith(
-                              color: SmartHomeColors.brandLightColor,
-                              fontSize: 16),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  const RectangleCircle(),
+                  MaterialButton(
+                    onPressed: () {
+                      if (_formLoginKey.currentState!.validate()) {
+                        // _formLoginKey.currentState!.save();
+                        print('Todos lo campos estan ok 🤯');
+                        userEmail = userEmailInputController.text;
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            AppRoutes.homePage, ModalRoute.withName('/'));
+                      }
+                    },
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(SmartHomeRadius.small),
+                          gradient: SmartHomeColors.brandLinearGradientPrimary),
+                      child: Center(
+                        child: Text(
+                          SmartHomeCopys.logIn,
+                          style: SmartHomeThemes
+                              .defaultTheme.textTheme.bodySmall!
+                              .copyWith(
+                                  color: SmartHomeColors.brandLightColor,
+                                  fontSize: 18),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               )
             ],
           ),
@@ -247,7 +277,8 @@ class TitleGroup extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 350,
-      decoration: BoxDecoration(gradient: SmartHomeColors.brandLinearGradient),
+      decoration:
+          BoxDecoration(gradient: SmartHomeColors.brandLinearGradientPrimary),
       child: Column(children: <Widget>[
         const Gap(100),
         Text(
@@ -264,7 +295,7 @@ class TitleGroup extends StatelessWidget {
         Text(
           SmartHomeCopys.controlSpace,
           style: SmartHomeThemes.defaultTheme.textTheme.bodyLarge!
-              .copyWith(color: SmartHomeColors.brandLightColor),
+              .copyWith(color: SmartHomeColors.brandLightColor, fontSize: 18),
         )
       ]),
     );

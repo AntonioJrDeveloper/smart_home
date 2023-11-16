@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 class SmartHomeColors {
   SmartHomeColors._();
-  static LinearGradient brandLinearGradient = const LinearGradient(
+  static LinearGradient brandLinearGradientPrimary = const LinearGradient(
       colors: [brandPrimaryColor, brandSecondaryColor, brandTertiaryColor],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter);
+  static LinearGradient brandLinearGradientSecundary = const LinearGradient(
+      colors: [brandPrimaryColor, brandSecondaryColor, brandTertiaryColor],
+      begin: Alignment.topRight,
+      end: Alignment.topLeft);
   static const Color brandPrimaryColor = Color.fromRGBO(84, 48, 217, 1);
   static const Color brandSecondaryColor = Color.fromRGBO(66, 38, 166, 1);
   static const Color brandTertiaryColor = Color.fromRGBO(47, 29, 115, 1);
