@@ -45,13 +45,14 @@ class ThingsGroup extends StatelessWidget {
       width: double.infinity,
       height: 100,
       child: Center(
-        child: ListView.builder(
+        child: ListView.separated(
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
-          itemCount: Mocks.listThingHome.length,
+          itemCount: Mocks.listThingsHome.length,
           itemBuilder: (_, index) => CardThing(
-              icon: Mocks.listThingHome[index].icon,
-              thing: Mocks.listThingHome[index].name),
+              icon: Mocks.listThingsHome[index].icon,
+              thing: Mocks.listThingsHome[index].name),
+          separatorBuilder: (_, index) => const Gap.expand(35),
         ),
       ),
     );

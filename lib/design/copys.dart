@@ -13,6 +13,7 @@ class SmartHomeCopys {
   static const String roomsHouse = 'Rooms of the house';
   static const String userEmailInputLabel = 'Email';
   static const String userPswInputLabel = 'Password';
+  static const String airConditioners = 'Air Conditioners';
 }
 
 class SmartHomeErrors {

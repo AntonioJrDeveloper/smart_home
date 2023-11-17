@@ -11,29 +11,32 @@ class CardThing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-        onPressed: () => print('Card $thing'),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: 50,
-              height: 50,
-              margin: const EdgeInsets.only(left: 25, right: 25),
-              decoration: const BoxDecoration(
-                  color: SmartHomeColors.brandPrimaryColor,
-                  borderRadius: BorderRadius.all(SmartHomeRadius.card)),
-              child: Icon(
-                icon,
-                color: SmartHomeColors.brandLightColor,
-              ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Ink(
+          width: 60,
+          height: 60,
+          decoration: const BoxDecoration(
+              color: SmartHomeColors.brandPrimaryColor,
+              borderRadius: BorderRadius.all(SmartHomeRadius.card)),
+          child: IconButton(
+            onPressed: () => print('Card $thing'),
+            icon: Icon(
+              icon,
             ),
-            const Gap(5),
-            Text(
-              thing,
-              style: SmartHomeThemes.defaultTheme.textTheme.bodySmall,
-            )
-          ],
-        ));
+            iconSize: 30,
+            color: SmartHomeColors.brandLightColor,
+          ),
+        ),
+        const Gap(5),
+        Text(
+          thing,
+          style: SmartHomeThemes.defaultTheme.textTheme.bodySmall!.copyWith(
+              color: SmartHomeColors.brandSecondaryColor,
+              fontWeight: FontWeight.w500),
+        )
+      ],
+    );
   }
 }

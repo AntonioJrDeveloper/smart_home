@@ -9,21 +9,22 @@ class CardRoom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-      onPressed: () => print('Card $room'),
-      child: Container(
-        width: double.infinity,
-        height: 135,
+    return Container(
+      margin: const EdgeInsets.all(7.5),
+      child: Ink(
         decoration: const BoxDecoration(
             color: SmartHomeColors.cardsColor,
             borderRadius: BorderRadius.all(SmartHomeRadius.card)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(
-              icon,
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.roomPage);
+              },
+              icon: Icon(icon),
+              iconSize: 75,
               color: SmartHomeColors.brandLightColor,
-              size: 75,
             ),
             Text(
               room,

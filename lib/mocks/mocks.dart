@@ -12,9 +12,22 @@ class Mocks {
     Room(name: 'Bathroom', icon: Symbols.bathroom),
   ];
 
-  static List<Thing> listThingHome = [
+  static List<Thing> listThingsHome = [
     Thing(name: 'Lights', icon: Symbols.light),
     Thing(name: 'Internet', icon: Symbols.wifi),
     Thing(name: 'Music', icon: Symbols.music_cast),
+  ];
+
+  static List<Thing> listThingsRoom = [
+    Thing(name: 'Lights', icon: Symbols.light),
+    Thing(name: 'TV', icon: Symbols.tv),
+    Thing(name: 'Temp', icon: Symbols.thermometer),
+    Thing(name: 'Music', icon: Symbols.music_cast),
+  ];
+
+  static List<String> listLevel = [
+    'Low',
+    'Med',
+    'High',
   ];
 }
