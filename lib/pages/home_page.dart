@@ -1,10 +1,11 @@
-import 'dart:js_util';
-
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
+import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
+
 import 'package:smart_home/design/designs.dart';
+import 'package:smart_home/mocks/mocks.dart';
+import 'package:smart_home/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,9 +25,36 @@ class HomePage extends StatelessWidget {
           RoomsGroup(),
           Gap.expand(40),
           MyDivider(),
+          Gap.expand(30),
+          ThingsGroup(),
+          Gap.expand(60),
         ],
       ),
     ));
+  }
+}
+
+class ThingsGroup extends StatelessWidget {
+  const ThingsGroup({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 100,
+      child: Center(
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          itemCount: Mocks.listThingHome.length,
+          itemBuilder: (_, index) => CardThing(
+              icon: Mocks.listThingHome[index].icon,
+              thing: Mocks.listThingHome[index].name),
+        ),
+      ),
+    );
   }
 }
 
@@ -48,32 +76,18 @@ class RoomsGroup extends StatelessWidget {
                 color: SmartHomeColors.brandSecondaryColor, fontSize: 18),
           ),
           const Gap.expand(20),
-          Container(
-            width: double.infinity,
-            height: 200,
-            color: Colors.amber,
+          GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+            ),
+            itemBuilder: (_, index) => CardRoom(
+                icon: Mocks.listRoom[index].icon,
+                room: Mocks.listRoom[index].name),
+            itemCount: Mocks.listRoom.length,
           )
-          //GridView.builder(gridDelegate: gridDelegate, itemBuilder: itemBuilder)
         ],
       ),
-    );
-  }
-}
-
-class MyDivider extends StatelessWidget {
-  const MyDivider({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(left: 20, right: 20),
-      height: 2.5,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-          color: SmartHomeColors.brandLightDividerColor,
-          borderRadius: BorderRadius.all(SmartHomeRadius.xs)),
     );
   }
 }
@@ -118,7 +132,7 @@ class YouGoingGroup extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    '30 °C',
+                    '30 °c',
                     style: SmartHomeThemes.defaultTheme.textTheme.bodyMedium!
                         .copyWith(
                             color: SmartHomeColors.brandPrimaryColor,
@@ -135,7 +149,7 @@ class YouGoingGroup extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    '25 °C',
+                    '25 °c',
                     style: SmartHomeThemes.defaultTheme.textTheme.bodyMedium!
                         .copyWith(
                             color: SmartHomeColors.brandPrimaryColor,
@@ -163,19 +177,21 @@ class AppBarGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return MyAppBar(
       height: 130,
-      decoration:
-          BoxDecoration(gradient: SmartHomeColors.brandLinearGradientSecundary),
-      child: Padding(
+      gradient: SmartHomeColors.brandLinearGradientSecundary,
+      widget: Padding(
         padding: const EdgeInsets.only(left: 25, right: 25),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Icon(
-                Icons.menu,
-                size: 30,
-                color: SmartHomeColors.brandLightColor,
+              MaterialButton(
+                onPressed: () => print('Menú'),
+                child: const Icon(
+                  Icons.menu,
+                  size: 30,
+                  color: SmartHomeColors.brandLightColor,
+                ),
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -194,10 +210,13 @@ class AppBarGroup extends StatelessWidget {
                   )
                 ],
               ),
-              const Icon(
-                Icons.settings,
-                size: 30,
-                color: SmartHomeColors.brandLightColor,
+              MaterialButton(
+                onPressed: () => print('Settings'),
+                child: const Icon(
+                  Icons.settings,
+                  size: 30,
+                  color: SmartHomeColors.brandLightColor,
+                ),
               )
             ]),
       ),

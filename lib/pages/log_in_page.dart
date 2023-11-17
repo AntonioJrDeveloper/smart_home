@@ -274,12 +274,10 @@ class TitleGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
+    return MyAppBar(
       height: 350,
-      decoration:
-          BoxDecoration(gradient: SmartHomeColors.brandLinearGradientPrimary),
-      child: Column(children: <Widget>[
+      gradient: SmartHomeColors.brandLinearGradientPrimary,
+      widget: Column(children: <Widget>[
         const Gap(100),
         Text(
           SmartHomeCopys.home,

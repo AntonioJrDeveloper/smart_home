@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-class Room {
+class Thing {
   final String name;
   final IconData icon;
-  Room({required this.name, required this.icon});
+
+  Thing({required this.name, required this.icon});
 }
