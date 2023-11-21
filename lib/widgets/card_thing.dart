@@ -4,10 +4,27 @@ import 'package:gap/gap.dart';
 
 import 'package:smart_home/design/designs.dart';
 
-class CardThing extends StatelessWidget {
+class CardThing extends StatefulWidget {
   final IconData icon;
   final String thing;
-  const CardThing({super.key, required this.icon, required this.thing});
+  final int? index;
+  const CardThing(
+      {super.key, required this.icon, required this.thing, this.index});
+
+  @override
+  State<CardThing> createState() => _CardThingState();
+}
+
+class _CardThingState extends State<CardThing> {
+  Border activeBorder =
+      Border.all(color: SmartHomeColors.brandPrimaryColor, width: 4);
+  late int? controller;
+
+  @override
+  void initState() {
+    controller = 0;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,21 +34,31 @@ class CardThing extends StatelessWidget {
         Ink(
           width: 60,
           height: 60,
-          decoration: const BoxDecoration(
-              color: SmartHomeColors.brandPrimaryColor,
-              borderRadius: BorderRadius.all(SmartHomeRadius.card)),
+          decoration: BoxDecoration(
+              color: widget.index == controller
+                  ? SmartHomeColors.brandPrimaryColor
+                  : null,
+              border: widget.index != controller ? activeBorder : null,
+              borderRadius: const BorderRadius.all(SmartHomeRadius.card)),
           child: IconButton(
-            onPressed: () => print('Card $thing'),
+            onPressed: () {
+              setState(() {
+                print('Card ${widget.thing}');
+                controller = widget.index;
+              });
+            },
             icon: Icon(
-              icon,
+              widget.icon,
             ),
             iconSize: 30,
-            color: SmartHomeColors.brandLightColor,
+            color: widget.index == controller
+                ? SmartHomeColors.brandLightColor
+                : SmartHomeColors.brandPrimaryColor,
           ),
         ),
         const Gap(5),
         Text(
-          thing,
+          widget.thing,
           style: SmartHomeThemes.defaultTheme.textTheme.bodySmall!.copyWith(
               color: SmartHomeColors.brandSecondaryColor,
               fontWeight: FontWeight.w500),

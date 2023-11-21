@@ -24,10 +24,4 @@ class Mocks {
     Thing(name: 'Temp', icon: Symbols.thermometer),
     Thing(name: 'Music', icon: Symbols.music_cast),
   ];
-
-  static List<String> listLevel = [
-    'Low',
-    'Med',
-    'High',
-  ];
 }

@@ -120,7 +120,7 @@ class _FromGroupState extends State<FromGroup> {
   );
   final defaultInputLabelTheme = SmartHomeThemes
       .defaultTheme.textTheme.bodySmall!
-      .copyWith(color: SmartHomeColors.brandLightInputColor, fontSize: 24);
+      .copyWith(color: SmartHomeColors.brandLightCircleColor, fontSize: 24);
   late bool onTapControllerEmail = true;
   late bool onTapControllerPsw = true;
 

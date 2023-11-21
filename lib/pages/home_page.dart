@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
           MyDivider(),
           Gap.expand(30),
           ThingsGroup(),
-          Gap.expand(60),
+          Gap.expand(30),
         ],
       ),
     ));
@@ -46,6 +46,7 @@ class ThingsGroup extends StatelessWidget {
       height: 100,
       child: Center(
         child: ListView.separated(
+          physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           itemCount: Mocks.listThingsHome.length,
@@ -119,7 +120,7 @@ class YouGoingGroup extends StatelessWidget {
                 children: <Widget>[
                   const Icon(
                     Symbols.rainy,
-                    size: 30,
+                    size: 34,
                     color: SmartHomeColors.brandPrimaryColor,
                   ),
                   Text(

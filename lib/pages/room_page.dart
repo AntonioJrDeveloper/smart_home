@@ -64,7 +64,7 @@ class AirConditionersGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 15, bottom: 15),
+      margin: const EdgeInsets.only(bottom: 15),
       child: Row(
         children: <Widget>[
           Container(
@@ -93,7 +93,7 @@ class AirConditionersGroup extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -108,31 +108,61 @@ class CotrolLevelTitleGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      transform: Matrix4.translationValues(0, -10, 0),
+      transform: Matrix4.translationValues(0, -18, 0),
       width: double.infinity,
       height: 60,
-      color: Colors.orange,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        itemCount: Mocks.listLevel.length,
-        itemBuilder: (_, index) => Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            IconButton(
-              onPressed: () => print(Mocks.listLevel[index]),
-              icon: const Icon(Symbols.arrow_drop_down),
-              color: SmartHomeColors.brandLightControlColor,
-            ),
-            Text(
-              Mocks.listLevel[index],
-              style: SmartHomeThemes.defaultTheme.textTheme.bodySmall!.copyWith(
-                  color: SmartHomeColors.brandPrimaryColor,
-                  fontWeight: FontWeight.w500),
-            ),
-          ],
-        ),
-        separatorBuilder: (_, index) => const Gap.expand(100),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            children: [
+              IconButton(
+                onPressed: () => print('Low'),
+                icon: const Icon(Symbols.arrow_drop_down),
+                color: SmartHomeColors.brandLightControlColor,
+              ),
+              Text(
+                'Low',
+                style: SmartHomeThemes.defaultTheme.textTheme.bodySmall!
+                    .copyWith(
+                        color: SmartHomeColors.brandPrimaryColor,
+                        fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              IconButton(
+                onPressed: () => print('Med'),
+                icon: const Icon(Symbols.arrow_drop_down),
+                color: SmartHomeColors.brandLightControlColor,
+              ),
+              Text(
+                'Med',
+                style: SmartHomeThemes.defaultTheme.textTheme.bodySmall!
+                    .copyWith(
+                        color: SmartHomeColors.brandPrimaryColor,
+                        fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              IconButton(
+                onPressed: () => print('High'),
+                icon: const Icon(Symbols.arrow_drop_down),
+                color: SmartHomeColors.brandLightControlColor,
+              ),
+              Text(
+                'High',
+                style: SmartHomeThemes.defaultTheme.textTheme.bodySmall!
+                    .copyWith(
+                        color: SmartHomeColors.brandPrimaryColor,
+                        fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -177,7 +207,6 @@ class TemperatureGroup extends StatelessWidget {
       margin: const EdgeInsets.only(left: 35, right: 35),
       width: double.infinity,
       height: 400,
-      color: Colors.blueAccent,
       child: Column(
         children: <Widget>[
           Text(
@@ -193,26 +222,26 @@ class TemperatureGroup extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              color: Colors.green,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const Icon(
-                    Symbols.remove,
+                  IconButton(
+                    onPressed: () => print('-'),
+                    icon: const Icon(Symbols.remove),
                     color: SmartHomeColors.brandLightControlColor,
-                    size: 40,
+                    iconSize: 40,
                   ),
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(
-                          top: 20, left: 12, right: 12, bottom: 20),
-                      color: Colors.amber,
+                      margin: const EdgeInsets.only(top: 20, bottom: 20),
                       child: const ControlLevelPowerGroup(),
                     ),
                   ),
-                  const Icon(
-                    Symbols.add,
+                  IconButton(
+                    onPressed: () => print('+'),
+                    icon: const Icon(Symbols.add),
                     color: SmartHomeColors.brandLightControlColor,
-                    size: 40,
+                    iconSize: 40,
                   )
                 ],
               ),
@@ -299,12 +328,14 @@ class ThingsGroupRoom extends StatelessWidget {
       height: 100,
       child: Center(
         child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             itemCount: Mocks.listThingsRoom.length,
             itemBuilder: (_, index) => CardThing(
                 icon: Mocks.listThingsRoom[index].icon,
-                thing: Mocks.listThingsRoom[index].name),
+                thing: Mocks.listThingsRoom[index].name,
+                index: index),
             separatorBuilder: (_, index) => const Gap.expand(35)),
       ),
     );
