@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:smart_home/design/designs.dart';
 import 'package:smart_home/mocks/mocks.dart';
+import 'package:smart_home/models/models.dart';
 import 'package:smart_home/widgets/widgets.dart';
 
 class RoomPage extends StatelessWidget {
@@ -314,10 +315,30 @@ class ControlLevelPowerGroup extends StatelessWidget {
   }
 }
 
-class ThingsGroupRoom extends StatelessWidget {
+class ThingsGroupRoom extends StatefulWidget {
   const ThingsGroupRoom({
     super.key,
   });
+
+  @override
+  State<ThingsGroupRoom> createState() => _ThingsGroupRoomState();
+}
+
+class _ThingsGroupRoomState extends State<ThingsGroupRoom> {
+  BoxDecoration activeBoxDecoration = const BoxDecoration(
+      color: SmartHomeColors.brandPrimaryColor,
+      borderRadius: BorderRadius.all(SmartHomeRadius.card));
+  BoxDecoration defaultBoxDecoration = BoxDecoration(
+      border: Border.all(
+        color: SmartHomeColors.brandPrimaryColor,
+        width: 4,
+      ),
+      borderRadius: const BorderRadius.all(SmartHomeRadius.card));
+
+  Color defaultColor = SmartHomeColors.brandPrimaryColor;
+  Color activeColor = SmartHomeColors.brandLightColor;
+
+  int controller = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -332,10 +353,22 @@ class ThingsGroupRoom extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             itemCount: Mocks.listThingsRoom.length,
-            itemBuilder: (_, index) => CardThing(
-                icon: Mocks.listThingsRoom[index].icon,
-                thing: Mocks.listThingsRoom[index].name,
-                index: index),
+            itemBuilder: (_, index) => InkWell(
+                  onTap: () {
+                    setState(() {
+                      controller = index;
+                      print(Mocks.listThingsRoom[index].name);
+                    });
+                  },
+                  child: CardThing(
+                    icon: Mocks.listThingsRoom[index].icon,
+                    thing: Mocks.listThingsRoom[index].name,
+                    boxDecoration: index == controller
+                        ? activeBoxDecoration
+                        : defaultBoxDecoration,
+                    iconColor: index == controller ? activeColor : defaultColor,
+                  ),
+                ),
             separatorBuilder: (_, index) => const Gap.expand(35)),
       ),
     );

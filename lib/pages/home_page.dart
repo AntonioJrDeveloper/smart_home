@@ -50,9 +50,17 @@ class ThingsGroup extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           itemCount: Mocks.listThingsHome.length,
-          itemBuilder: (_, index) => CardThing(
+          itemBuilder: (_, index) => InkWell(
+            onTap: () => print(Mocks.listThingsHome[index].name),
+            child: CardThing(
               icon: Mocks.listThingsHome[index].icon,
-              thing: Mocks.listThingsHome[index].name),
+              thing: Mocks.listThingsHome[index].name,
+              boxDecoration: const BoxDecoration(
+                  color: SmartHomeColors.brandPrimaryColor,
+                  borderRadius: BorderRadius.all(SmartHomeRadius.card)),
+              iconColor: SmartHomeColors.brandLightColor,
+            ),
+          ),
           separatorBuilder: (_, index) => const Gap.expand(35),
         ),
       ),
