@@ -10,6 +10,7 @@ class SmartHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case AppRoutes.homePage:

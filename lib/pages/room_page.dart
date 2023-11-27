@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import 'package:material_symbols_icons/symbols.dart';
+
 import 'package:smart_home/design/designs.dart';
 import 'package:smart_home/mocks/mocks.dart';
-import 'package:smart_home/models/models.dart';
 import 'package:smart_home/widgets/widgets.dart';
 
 class RoomPage extends StatelessWidget {
@@ -57,10 +57,44 @@ class OtherGroup extends StatelessWidget {
   }
 }
 
-class AirConditionersGroup extends StatelessWidget {
+class AirConditionersGroup extends StatefulWidget {
   const AirConditionersGroup({
     super.key,
   });
+
+  @override
+  State<AirConditionersGroup> createState() => _AirConditionersGroupState();
+}
+
+class _AirConditionersGroupState extends State<AirConditionersGroup> {
+  double _widthInitial = 300;
+  double _percentageInitial = 0;
+  double _width = 0;
+  double _percentage = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      _width = _percentageInitial * _widthInitial;
+      _percentage = _percentageInitial * 100;
+    });
+  }
+
+  void _incrementPercentage() {
+    setState(() {
+      _width += _widthInitial / 10;
+      _percentage += 0.1 * 100;
+    });
+  }
+
+  void _decrementPercentage() {
+    setState(() {
+      _width -= _widthInitial / 10;
+      _percentage -= 0.1 * 100;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,16 +116,147 @@ class AirConditionersGroup extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Container(
-              transform: Matrix4.translationValues(0, 35, 0),
-              margin: const EdgeInsets.only(left: 20, right: 25),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  ControlLevelGroup(),
-                  Gap.expand(10),
-                  CotrolLevelTitleGroup(),
-                ],
+            child: GestureDetector(
+              onTap: () => _percentage != 100 ? _incrementPercentage() : null,
+              onDoubleTap: () => _percentage > 0 && _percentage <= 100
+                  ? _decrementPercentage()
+                  : null,
+              behavior: HitTestBehavior.translucent,
+              child: Container(
+                transform: Matrix4.translationValues(0, 35, 0),
+                margin: const EdgeInsets.only(left: 20, right: 25),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    //ControlLevelGroup()
+                    Stack(alignment: Alignment.centerLeft, children: <Widget>[
+                      Container(
+                        width: double.infinity,
+                        height: 10,
+                        decoration: BoxDecoration(
+                            gradient:
+                                SmartHomeColors.brandLinearGradientSecundary,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(12))),
+                      ),
+                      Transform.translate(
+                        offset: Offset(
+                            _percentage == 100
+                                ? _width - ((_widthInitial / 10) / 2)
+                                : _width <= _widthInitial
+                                    ? _width
+                                    : _width - ((_widthInitial / 10) / 2),
+                            0),
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          decoration: const BoxDecoration(
+                              color: SmartHomeColors.brandLightControlColor,
+                              border: Border.fromBorderSide(BorderSide(
+                                  width: 2,
+                                  color: SmartHomeColors.brandLightColor)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12))),
+                        ),
+                      ),
+                    ]),
+                    const Gap.expand(10),
+                    //CotrolLevelTitleGroup()
+                    Container(
+                      transform: Matrix4.translationValues(0, -18, 0),
+                      width: double.infinity,
+                      height: 60,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _percentage = 0;
+                                    _width = _widthInitial * _percentage;
+                                    print('Low $_width');
+                                  });
+                                },
+                                icon: const Icon(Symbols.arrow_drop_down),
+                                color: SmartHomeColors.brandLightControlColor,
+                              ),
+                              Text(
+                                'Low',
+                                style: SmartHomeThemes
+                                    .defaultTheme.textTheme.bodySmall!
+                                    .copyWith(
+                                        color:
+                                            SmartHomeColors.brandPrimaryColor,
+                                        fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _percentage = 0.5;
+                                    _width = _widthInitial * _percentage;
+                                    print('Med $_width');
+                                  });
+                                },
+                                icon: const Icon(Symbols.arrow_drop_down),
+                                color: SmartHomeColors.brandLightControlColor,
+                              ),
+                              Text(
+                                'Med',
+                                style: SmartHomeThemes
+                                    .defaultTheme.textTheme.bodySmall!
+                                    .copyWith(
+                                        color:
+                                            SmartHomeColors.brandPrimaryColor,
+                                        fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _percentage = 1;
+                                    _width = _widthInitial * _percentage;
+                                    print('High $_width');
+                                  });
+                                },
+                                icon: const Icon(Symbols.arrow_drop_down),
+                                color: SmartHomeColors.brandLightControlColor,
+                              ),
+                              Text(
+                                'High',
+                                style: SmartHomeThemes
+                                    .defaultTheme.textTheme.bodySmall!
+                                    .copyWith(
+                                        color:
+                                            SmartHomeColors.brandPrimaryColor,
+                                        fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    /*
+                      ControlLevelGroup(
+                        percentage: 0,
+                        width: 300,
+                        backgroundColor:
+                            SmartHomeColors.brandLinearGradientSecundary,
+                        borderRadius: SmartHomeRadius.xs,
+                      ),
+                      const Gap.expand(10),
+                      const CotrolLevelTitleGroup(),
+                      */
+                  ],
+                ),
               ),
             ),
           ),
@@ -101,6 +266,7 @@ class AirConditionersGroup extends StatelessWidget {
   }
 }
 
+/*
 class CotrolLevelTitleGroup extends StatelessWidget {
   const CotrolLevelTitleGroup({
     super.key,
@@ -176,7 +342,7 @@ class ControlLevelGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(alignment: Alignment.center, children: <Widget>[
+    return Stack(alignment: Alignment.centerLeft, children: <Widget>[
       Container(
         width: double.infinity,
         height: 10,
@@ -196,7 +362,7 @@ class ControlLevelGroup extends StatelessWidget {
     ]);
   }
 }
-
+*/
 class TemperatureGroup extends StatelessWidget {
   const TemperatureGroup({
     super.key,
