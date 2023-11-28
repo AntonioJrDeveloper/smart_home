@@ -96,6 +96,29 @@ class _AirConditionersGroupState extends State<AirConditionersGroup> {
     });
   }
 
+  void _lowPercentage() {
+    setState(() {
+      _percentage = 0;
+      _width = 0;
+    });
+  }
+
+  void _medPercentage() {
+    setState(() {
+      _percentage = 0;
+      _width = _widthInitial / 2;
+      _percentage = 0.5 * 100;
+    });
+  }
+
+  void _highPercentage() {
+    setState(() {
+      _percentage = 0;
+      _width = _widthInitial;
+      _percentage = 1 * 100;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -128,133 +151,16 @@ class _AirConditionersGroupState extends State<AirConditionersGroup> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    //ControlLevelGroup()
-                    Stack(alignment: Alignment.centerLeft, children: <Widget>[
-                      Container(
-                        width: double.infinity,
-                        height: 10,
-                        decoration: BoxDecoration(
-                            gradient:
-                                SmartHomeColors.brandLinearGradientSecundary,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(12))),
-                      ),
-                      Transform.translate(
-                        offset: Offset(
-                            _percentage == 100
-                                ? _width - ((_widthInitial / 10) / 2)
-                                : _width <= _widthInitial
-                                    ? _width
-                                    : _width - ((_widthInitial / 10) / 2),
-                            0),
-                        child: Container(
-                          width: 20,
-                          height: 20,
-                          decoration: const BoxDecoration(
-                              color: SmartHomeColors.brandLightControlColor,
-                              border: Border.fromBorderSide(BorderSide(
-                                  width: 2,
-                                  color: SmartHomeColors.brandLightColor)),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
-                        ),
-                      ),
-                    ]),
+                    ControlLevelGroup(
+                        percentage: _percentage,
+                        width: _width,
+                        widthInitial: _widthInitial),
                     const Gap.expand(10),
-                    //CotrolLevelTitleGroup()
-                    Container(
-                      transform: Matrix4.translationValues(0, -18, 0),
-                      width: double.infinity,
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _percentage = 0;
-                                    _width = _widthInitial * _percentage;
-                                    print('Low $_width');
-                                  });
-                                },
-                                icon: const Icon(Symbols.arrow_drop_down),
-                                color: SmartHomeColors.brandLightControlColor,
-                              ),
-                              Text(
-                                'Low',
-                                style: SmartHomeThemes
-                                    .defaultTheme.textTheme.bodySmall!
-                                    .copyWith(
-                                        color:
-                                            SmartHomeColors.brandPrimaryColor,
-                                        fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _percentage = 0.5;
-                                    _width = _widthInitial * _percentage;
-                                    print('Med $_width');
-                                  });
-                                },
-                                icon: const Icon(Symbols.arrow_drop_down),
-                                color: SmartHomeColors.brandLightControlColor,
-                              ),
-                              Text(
-                                'Med',
-                                style: SmartHomeThemes
-                                    .defaultTheme.textTheme.bodySmall!
-                                    .copyWith(
-                                        color:
-                                            SmartHomeColors.brandPrimaryColor,
-                                        fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _percentage = 1;
-                                    _width = _widthInitial * _percentage;
-                                    print('High $_width');
-                                  });
-                                },
-                                icon: const Icon(Symbols.arrow_drop_down),
-                                color: SmartHomeColors.brandLightControlColor,
-                              ),
-                              Text(
-                                'High',
-                                style: SmartHomeThemes
-                                    .defaultTheme.textTheme.bodySmall!
-                                    .copyWith(
-                                        color:
-                                            SmartHomeColors.brandPrimaryColor,
-                                        fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                    CotrolLevelTitleGroup(
+                      lowPercentage: _lowPercentage,
+                      medPercentage: _medPercentage,
+                      highPercentage: _highPercentage,
                     ),
-                    /*
-                      ControlLevelGroup(
-                        percentage: 0,
-                        width: 300,
-                        backgroundColor:
-                            SmartHomeColors.brandLinearGradientSecundary,
-                        borderRadius: SmartHomeRadius.xs,
-                      ),
-                      const Gap.expand(10),
-                      const CotrolLevelTitleGroup(),
-                      */
                   ],
                 ),
               ),
@@ -266,10 +172,15 @@ class _AirConditionersGroupState extends State<AirConditionersGroup> {
   }
 }
 
-/*
 class CotrolLevelTitleGroup extends StatelessWidget {
+  final VoidCallback lowPercentage;
+  final VoidCallback medPercentage;
+  final VoidCallback highPercentage;
   const CotrolLevelTitleGroup({
     super.key,
+    required this.lowPercentage,
+    required this.medPercentage,
+    required this.highPercentage,
   });
 
   @override
@@ -284,7 +195,7 @@ class CotrolLevelTitleGroup extends StatelessWidget {
           Column(
             children: [
               IconButton(
-                onPressed: () => print('Low'),
+                onPressed: () => lowPercentage(),
                 icon: const Icon(Symbols.arrow_drop_down),
                 color: SmartHomeColors.brandLightControlColor,
               ),
@@ -300,7 +211,7 @@ class CotrolLevelTitleGroup extends StatelessWidget {
           Column(
             children: [
               IconButton(
-                onPressed: () => print('Med'),
+                onPressed: () => medPercentage(),
                 icon: const Icon(Symbols.arrow_drop_down),
                 color: SmartHomeColors.brandLightControlColor,
               ),
@@ -316,7 +227,7 @@ class CotrolLevelTitleGroup extends StatelessWidget {
           Column(
             children: [
               IconButton(
-                onPressed: () => print('High'),
+                onPressed: () => highPercentage(),
                 icon: const Icon(Symbols.arrow_drop_down),
                 color: SmartHomeColors.brandLightControlColor,
               ),
@@ -338,7 +249,16 @@ class CotrolLevelTitleGroup extends StatelessWidget {
 class ControlLevelGroup extends StatelessWidget {
   const ControlLevelGroup({
     super.key,
-  });
+    required double percentage,
+    required double width,
+    required double widthInitial,
+  })  : _percentage = percentage,
+        _width = width,
+        _widthInitial = widthInitial;
+
+  final double _percentage;
+  final double _width;
+  final double _widthInitial;
 
   @override
   Widget build(BuildContext context) {
@@ -348,21 +268,30 @@ class ControlLevelGroup extends StatelessWidget {
         height: 10,
         decoration: BoxDecoration(
             gradient: SmartHomeColors.brandLinearGradientSecundary,
-            borderRadius: const BorderRadius.all(SmartHomeRadius.xs)),
+            borderRadius: const BorderRadius.all(Radius.circular(12))),
       ),
-      Container(
-        width: 20,
-        height: 20,
-        decoration: const BoxDecoration(
-            color: SmartHomeColors.brandLightControlColor,
-            border: Border.fromBorderSide(
-                BorderSide(width: 2, color: SmartHomeColors.brandLightColor)),
-            borderRadius: BorderRadius.all(SmartHomeRadius.xs)),
+      Transform.translate(
+        offset: Offset(
+            _percentage == 100
+                ? _width - ((_widthInitial / 10) / 2)
+                : _width <= _widthInitial
+                    ? _width
+                    : _width - ((_widthInitial / 10) / 2),
+            0),
+        child: Container(
+          width: 20,
+          height: 20,
+          decoration: const BoxDecoration(
+              color: SmartHomeColors.brandLightControlColor,
+              border: Border.fromBorderSide(
+                  BorderSide(width: 2, color: SmartHomeColors.brandLightColor)),
+              borderRadius: BorderRadius.all(Radius.circular(12))),
+        ),
       ),
     ]);
   }
 }
-*/
+
 class TemperatureGroup extends StatelessWidget {
   const TemperatureGroup({
     super.key,
@@ -399,10 +328,7 @@ class TemperatureGroup extends StatelessWidget {
                     iconSize: 40,
                   ),
                   Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 20, bottom: 20),
-                      child: const ControlLevelPowerGroup(),
-                    ),
+                    child: const ControlLevelPowerGroup(),
                   ),
                   IconButton(
                     onPressed: () => print('+'),
@@ -427,10 +353,11 @@ class ControlLevelPowerGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return const Stack(
       alignment: Alignment.center,
       children: <Widget>[
-        const Circle(),
+        ProgressCardCircle()
+        /*Circle(),
         Container(
           width: 225,
           height: 225,
@@ -475,7 +402,7 @@ class ControlLevelPowerGroup extends StatelessWidget {
               borderRadius: BorderRadius.all(SmartHomeRadius.card),
               border: Border.fromBorderSide(BorderSide(
                   color: SmartHomeColors.brandLightColor, width: 3))),
-        )
+        )*/
       ],
     );
   }

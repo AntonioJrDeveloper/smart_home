@@ -13,10 +13,11 @@ class Circle extends StatelessWidget {
     return Container(
       width: 250,
       height: 250,
+      /*
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(SmartHomeRadius.smallXX),
         color: SmartHomeColors.brandLightCircleColor.withOpacity(0.7),
-      ),
+      ),*/
       child: CustomPaint(
         painter: _PaintCircle(),
       ),
@@ -27,6 +28,13 @@ class Circle extends StatelessWidget {
 class _PaintCircle extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
+    final paintCiclePrincipal = Paint()
+      ..color = SmartHomeColors.brandLightLineColor.withOpacity(0.7)
+      ..style = PaintingStyle.fill
+      ..strokeWidth = 2;
+
+    canvas.drawCircle(const Offset(125, 125), 125, paintCiclePrincipal);
+
     final paint = Paint()
       ..color = SmartHomeColors.brandLightLineColor
       ..style = PaintingStyle.stroke
