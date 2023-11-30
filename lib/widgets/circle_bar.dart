@@ -2,20 +2,21 @@ import 'dart:math' as Math;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+
+import 'package:vector_math/vector_math.dart' as Vector;
+
 import 'package:smart_home/design/designs.dart';
 
 /// Draws a circular animated progress bar.
 class CircleBar extends StatefulWidget {
   final Duration? animationDuration;
-  final Color? backgroundColor;
-  final Color foregroundColor;
+  final LinearGradient backgroundPercentageColor;
   final double value;
 
   const CircleBar({
     Key? key,
     this.animationDuration,
-    this.backgroundColor,
-    required this.foregroundColor,
+    required this.backgroundPercentageColor,
     required this.value,
   }) : super(key: key);
 
@@ -33,8 +34,7 @@ class CircleBarState extends State<CircleBar>
 
   late Animation<double> curve;
   late Tween<double> valueTween;
-  late Tween<Color> backgroundColorTween;
-  late Tween<Color> foregroundColorTween;
+  late Tween<LinearGradient> backgroundColorTween;
 
   @override
   void initState() {
@@ -56,10 +56,9 @@ class CircleBarState extends State<CircleBar>
       end: widget.value,
     );
 
-    backgroundColorTween = Tween<Color>(
-        begin: widget.backgroundColor, end: widget.backgroundColor);
-    foregroundColorTween = Tween<Color>(
-        begin: widget.foregroundColor, end: widget.foregroundColor);
+    backgroundColorTween = Tween<LinearGradient>(
+        begin: widget.backgroundPercentageColor,
+        end: widget.backgroundPercentageColor);
 
     _controller.forward();
   }
@@ -79,25 +78,6 @@ class CircleBarState extends State<CircleBar>
         end: widget.value,
       );
 
-      // Clear cached color tweens when the color hasn't changed.
-      if (oldWidget.backgroundColor != widget.backgroundColor) {
-        backgroundColorTween = Tween<Color>(
-          begin: oldWidget.backgroundColor ?? TRANSPARENT,
-          end: widget.backgroundColor ?? TRANSPARENT,
-        );
-      } else {
-        backgroundColorTween;
-      }
-
-      if (oldWidget.foregroundColor != widget.foregroundColor) {
-        foregroundColorTween = Tween<Color>(
-          begin: oldWidget.foregroundColor,
-          end: widget.foregroundColor,
-        );
-      } else {
-        foregroundColorTween;
-      }
-
       _controller
         ..value = 0
         ..forward();
@@ -116,20 +96,17 @@ class CircleBarState extends State<CircleBar>
       animation: curve,
       child: Expanded(
         child: Container(
-          color: Colors.amber,
           width: double.infinity,
           height: 207,
         ),
       ),
       builder: (context, child) {
-        final backgroundColor = widget.backgroundColor;
-        final foregroundColor = widget.foregroundColor;
+        final backgroundColor = widget.backgroundPercentageColor;
         return CustomPaint(
           foregroundPainter: CircleBarPainter(
-            backgroundColor: backgroundColor,
-            foregroundColor: foregroundColor,
+            backgroundPercentageColor: backgroundColor,
             percentage: valueTween.evaluate(curve),
-            strokeWidth: 10,
+            strokeWidth: 17.5,
           ),
           child: child,
         );
@@ -142,12 +119,10 @@ class CircleBarState extends State<CircleBar>
 class CircleBarPainter extends CustomPainter {
   final double percentage;
   late double strokeWidth;
-  final Color? backgroundColor;
-  final Color foregroundColor;
+  final LinearGradient backgroundPercentageColor;
 
   CircleBarPainter({
-    this.backgroundColor,
-    required this.foregroundColor,
+    required this.backgroundPercentageColor,
     required this.percentage,
     this.strokeWidth = 0,
   });
@@ -167,27 +142,65 @@ class CircleBarPainter extends CustomPainter {
     final double sweepAngle = -(2 * Math.pi * (percentage));
 
     final paintCirclePrincipal = Paint()
-      ..color = SmartHomeColors.brandLightLineColor.withOpacity(0.7)
+      ..color = SmartHomeColors.brandLightLineColor.withOpacity(0.2)
       ..style = PaintingStyle.fill
       ..strokeWidth = 2;
 
     canvas.drawCircle(center, 125, paintCirclePrincipal);
 
-    final paintCircleCentral = Paint()
+    final paintCircleCenter = Paint()
       ..color = SmartHomeColors.brandLightLineColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
-    canvas.drawCircle(center, 125, paintCircleCentral);
+    canvas.drawCircle(center, 125, paintCircleCenter);
 
-    // Don't draw the background if we don't have a background color
-    if (backgroundColor != null) {
-      final backgroundPaint = Paint()
-        ..color = backgroundColor!
-        ..strokeWidth = strokeWidth
-        ..style = PaintingStyle.stroke;
-      canvas.drawCircle(center, radius, backgroundPaint);
+    for (var i = 0; i < 60; i++) {
+      //Calcular la posision de la linea
+      double line = 360 / 16 * i;
+      //Establecer estilo de la linea cada 5
+      int distance = 0;
+      if (i % 5 == 0) {
+        paintCircleCenter.color = SmartHomeColors.brandLightLineColor;
+        paintCircleCenter.strokeWidth = 2;
+        distance = 1;
+        paintCircleCenter.strokeCap = StrokeCap.round;
+      }
+
+      double x1 = (size.width / 2) +
+          (size.width / 3 + distance) * cos(Vector.radians(line));
+      double y1 = (size.height / 2) +
+          (size.width / 3 + distance) * sin(Vector.radians(line));
+      final p1 = Offset(x1, y1);
+
+      double x2 = (size.width / 2) +
+          (size.width / 3 + 37.5) * cos(Vector.radians(line));
+      double y2 = (size.height / 2) +
+          (size.width / 3 + 37.5) * sin(Vector.radians(line));
+      final p2 = Offset(x2, y2);
+
+      canvas.drawLine(p1, p2, paintCircleCenter);
     }
+
+    final backgroundPaintCircleCenter = Paint()
+      ..color = SmartHomeColors.brandLightColor
+      ..style = PaintingStyle.fill;
+    canvas.drawCircle(
+        center, radius + strokeWidth + 2.5, backgroundPaintCircleCenter);
+
+    final backgroundPaintPercentageColor = Paint()
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke
+      ..shader = backgroundPercentageColor
+          .createShader(Rect.fromCircle(center: center, radius: radius));
+    canvas.drawCircle(center, radius, backgroundPaintPercentageColor);
+
+    final backgroundPaintIconColor = Paint()
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.fill
+      ..shader = backgroundPercentageColor
+          .createShader(Rect.fromCircle(center: center, radius: radius));
+    canvas.drawCircle(center, radius / 3, backgroundPaintIconColor);
 
     final beta = sweepAngle;
     final shiftX = -radius * sin(beta);
@@ -195,25 +208,24 @@ class CircleBarPainter extends CustomPainter {
     final translateX = size.width / 2 - shiftX;
     final translateY = size.height / 2 - shiftY;
 
-    final borderbottonPaint = Paint()
-      ..color = Colors.white
+    final borderButtonPaint = Paint()
+      ..color = SmartHomeColors.brandLightColor
       ..style = PaintingStyle.fill;
     canvas.drawCircle(
-        Offset(translateX, translateY), radius / 3.25, borderbottonPaint);
+        Offset(translateX, translateY), radius / 5, borderButtonPaint);
 
     final buttonPaint = Paint()
-      ..color = Colors.blue
+      ..color = SmartHomeColors.brandLightControlColor
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.fill;
-    canvas.drawCircle(Offset(translateX, translateY), radius / 4, buttonPaint);
+    canvas.drawCircle(Offset(translateX, translateY), radius / 6, buttonPaint);
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     final oldPainter = (oldDelegate as CircleBarPainter);
     return oldPainter.percentage != percentage ||
-        oldPainter.backgroundColor != backgroundColor ||
-        oldPainter.foregroundColor != foregroundColor ||
+        oldPainter.backgroundPercentageColor != backgroundPercentageColor ||
         oldPainter.strokeWidth != strokeWidth;
   }
 }

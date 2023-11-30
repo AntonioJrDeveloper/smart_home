@@ -188,7 +188,7 @@ class CotrolLevelTitleGroup extends StatelessWidget {
     return Container(
       transform: Matrix4.translationValues(0, -18, 0),
       width: double.infinity,
-      height: 60,
+      height: 80,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -265,10 +265,10 @@ class ControlLevelGroup extends StatelessWidget {
     return Stack(alignment: Alignment.centerLeft, children: <Widget>[
       Container(
         width: double.infinity,
-        height: 10,
+        height: 8,
         decoration: BoxDecoration(
             gradient: SmartHomeColors.brandLinearGradientSecundary,
-            borderRadius: const BorderRadius.all(Radius.circular(12))),
+            borderRadius: const BorderRadius.all(Radius.circular(10))),
       ),
       Transform.translate(
         offset: Offset(
@@ -279,12 +279,12 @@ class ControlLevelGroup extends StatelessWidget {
                     : _width - ((_widthInitial / 10) / 2),
             0),
         child: Container(
-          width: 20,
-          height: 20,
+          width: 25,
+          height: 25,
           decoration: const BoxDecoration(
               color: SmartHomeColors.brandLightControlColor,
               border: Border.fromBorderSide(
-                  BorderSide(width: 2, color: SmartHomeColors.brandLightColor)),
+                  BorderSide(width: 3, color: SmartHomeColors.brandLightColor)),
               borderRadius: BorderRadius.all(Radius.circular(12))),
         ),
       ),
@@ -292,10 +292,31 @@ class ControlLevelGroup extends StatelessWidget {
   }
 }
 
-class TemperatureGroup extends StatelessWidget {
+class TemperatureGroup extends StatefulWidget {
   const TemperatureGroup({
     super.key,
   });
+
+  @override
+  State<TemperatureGroup> createState() => _TemperatureGroupState();
+}
+
+class _TemperatureGroupState extends State<TemperatureGroup> {
+  double progressPercent = 0;
+
+  void _incrementProgressPercent() {
+    final updated = ((progressPercent + 0.1).clamp(0.0, 1.0) * 100);
+    setState(() {
+      progressPercent = updated.round() / 100;
+    });
+  }
+
+  void _decrementProgressPercent() {
+    final updated = ((progressPercent - 0.1).clamp(0.0, 1.0) * 100);
+    setState(() {
+      progressPercent = updated.round() / 100;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -316,25 +337,30 @@ class TemperatureGroup extends StatelessWidget {
             style: SmartHomeThemes.defaultTheme.textTheme.bodyMedium!.copyWith(
                 color: SmartHomeColors.brandSecondaryColor, fontSize: 55),
           ),
+          const Gap.expand(20),
           Expanded(
             child: Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   IconButton(
-                    onPressed: () => print('-'),
+                    onPressed: () => _decrementProgressPercent(),
                     icon: const Icon(Symbols.remove),
                     color: SmartHomeColors.brandLightControlColor,
-                    iconSize: 40,
+                    iconSize: 55,
                   ),
                   Expanded(
-                    child: const ControlLevelPowerGroup(),
+                    child: ControlLevelPowerGroup(
+                      progressPercent: progressPercent,
+                      incrementProgressPercent: _incrementProgressPercent,
+                      decrementProgressPercent: _decrementProgressPercent,
+                    ),
                   ),
                   IconButton(
-                    onPressed: () => print('+'),
+                    onPressed: () => _incrementProgressPercent(),
                     icon: const Icon(Symbols.add),
                     color: SmartHomeColors.brandLightControlColor,
-                    iconSize: 40,
+                    iconSize: 55,
                   )
                 ],
               ),
@@ -347,62 +373,31 @@ class TemperatureGroup extends StatelessWidget {
 }
 
 class ControlLevelPowerGroup extends StatelessWidget {
+  final double progressPercent;
+  final VoidCallback incrementProgressPercent;
+  final VoidCallback decrementProgressPercent;
   const ControlLevelPowerGroup({
     super.key,
+    required this.progressPercent,
+    required this.incrementProgressPercent,
+    required this.decrementProgressPercent,
   });
 
   @override
   Widget build(BuildContext context) {
-    return const Stack(
+    return Stack(
       alignment: Alignment.center,
       children: <Widget>[
-        ProgressCardCircle()
-        /*Circle(),
-        Container(
-          width: 225,
-          height: 225,
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(SmartHomeRadius.smallXX),
-              color: SmartHomeColors.brandLightColor),
+        ProgressCardCircle(
+            progressPercent: progressPercent,
+            incrementProgressPercent: incrementProgressPercent,
+            decrementProgressPercent: decrementProgressPercent),
+        IconButton(
+          onPressed: () => print('Control Power'),
+          icon: const Icon(Symbols.power_settings_new_rounded),
+          color: SmartHomeColors.brandLightColor,
+          iconSize: 60,
         ),
-        Container(
-          width: 200,
-          height: 200,
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(SmartHomeRadius.smallX),
-              gradient: SmartHomeColors.brandLinearGradientPrimary),
-        ),
-        Container(
-          width: 175,
-          height: 175,
-          decoration: const BoxDecoration(
-            color: SmartHomeColors.brandLightColor,
-            borderRadius: BorderRadius.all(SmartHomeRadius.smallX),
-          ),
-        ),
-        Container(
-          width: 75,
-          height: 75,
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(SmartHomeRadius.small),
-              gradient: SmartHomeColors.brandLinearGradientPrimary),
-          child: IconButton(
-            onPressed: () => print('Control Power'),
-            icon: const Icon(Symbols.power_settings_new_rounded),
-            color: SmartHomeColors.brandLightColor,
-            iconSize: 60,
-          ),
-        ),
-        Container(
-          transform: Matrix4.translationValues(92.5, 0, 0),
-          width: 30,
-          height: 30,
-          decoration: const BoxDecoration(
-              color: SmartHomeColors.brandLightControlColor,
-              borderRadius: BorderRadius.all(SmartHomeRadius.card),
-              border: Border.fromBorderSide(BorderSide(
-                  color: SmartHomeColors.brandLightColor, width: 3))),
-        )*/
       ],
     );
   }

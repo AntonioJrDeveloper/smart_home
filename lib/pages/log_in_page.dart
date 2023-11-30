@@ -111,12 +111,12 @@ class _FromGroupState extends State<FromGroup> {
   final defaultCotainerInputDecoration = BoxDecoration(
     color: SmartHomeColors.brandLightColor,
     border: Border.all(color: SmartHomeColors.brandLightDividerColor, width: 2),
-    borderRadius: const BorderRadius.all(SmartHomeRadius.xs),
+    borderRadius: const BorderRadius.all(SmartHomeRadius.card),
   );
   final activeContainerInputDecoration = BoxDecoration(
     color: SmartHomeColors.brandLightColor,
     border: Border.all(color: SmartHomeColors.brandPrimaryColor, width: 2),
-    borderRadius: const BorderRadius.all(SmartHomeRadius.xs),
+    borderRadius: const BorderRadius.all(SmartHomeRadius.card),
   );
   final defaultInputLabelTheme = SmartHomeThemes
       .defaultTheme.textTheme.bodySmall!
