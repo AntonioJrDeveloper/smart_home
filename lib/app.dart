@@ -16,7 +16,8 @@ class SmartHome extends StatelessWidget {
           case AppRoutes.homePage:
             return MaterialPageRoute(builder: (_) => const HomePage());
           case AppRoutes.roomPage:
-            return MaterialPageRoute(builder: (_) => const RoomPage());
+            return MaterialPageRoute(
+                builder: (_) => RoomPage(room: settings.arguments as String));
           default:
             return MaterialPageRoute(builder: (_) => const LogInPage());
         }

@@ -20,7 +20,8 @@ class CardRoom extends StatelessWidget {
           children: <Widget>[
             IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(AppRoutes.roomPage);
+                Navigator.of(context)
+                    .pushNamed(AppRoutes.roomPage, arguments: room);
               },
               icon: Icon(icon),
               iconSize: 75,

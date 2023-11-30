@@ -9,21 +9,22 @@ import 'package:smart_home/mocks/mocks.dart';
 import 'package:smart_home/widgets/widgets.dart';
 
 class RoomPage extends StatelessWidget {
-  const RoomPage({Key? key}) : super(key: key);
+  final String room;
+  const RoomPage({Key? key, required this.room}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
         body: SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          AppBarGroupRoom(),
-          ThingsGroupRoom(),
-          Gap.expand(30),
-          TemperatureGroup(),
-          Gap.expand(30),
-          OtherGroup(),
-          Gap.expand(30),
+          AppBarGroupRoom(room: room),
+          const ThingsGroupRoom(),
+          const Gap.expand(30),
+          const TemperatureGroup(),
+          const Gap.expand(30),
+          const OtherGroup(),
+          const Gap.expand(30),
         ],
       ),
     ));
@@ -464,8 +465,10 @@ class _ThingsGroupRoomState extends State<ThingsGroupRoom> {
 }
 
 class AppBarGroupRoom extends StatelessWidget {
+  final String room;
   const AppBarGroupRoom({
     super.key,
+    required this.room,
   });
 
   @override
@@ -483,7 +486,7 @@ class AppBarGroupRoom extends StatelessWidget {
                 iconSize: 60,
               ),
               Text(
-                'Room',
+                room,
                 style: SmartHomeThemes.defaultTheme.textTheme.bodySmall!
                     .copyWith(
                         color: SmartHomeColors.brandSecondaryColor,
