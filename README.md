@@ -1,16 +1,12 @@
-# smart_home
+# Weinflu App Smart_Home
 
-A new Flutter project.
+Esta aplicación se realizo como examen práctico para culminar el curso básico de Weinflu.
 
-## Getting Started
+## Diseño de referencia 
 
-This project is a starting point for a Flutter application.
+Para desarrollar esta app me inspiré del siguiente diseño [Smart Home](https://www.freepik.com/free-vector/smart-home-app-concept_9472502.htm#query=smart%20home%20app&position=43&from_view=keyword&track=ais&uuid=cd18ef3b-18bc-4f97-94a0-1a0c38a33a02) de la plataforma de Freepik.
 
-A few resources to get you started if this is your first Flutter project:
+## Aplicación terminada en Flutter
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+https://github.com/AntonioJrDeveloper/smart_home/assets/112713650/3e7a8e23-1df2-4f8c-abba-3162569ce43f
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
